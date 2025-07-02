@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>🐶 Weather Biplane Pet</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fdfcf7;
+      text-align: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+    #pet-container {
+      position: relative;
+      background-color: #fff;
+      border: 2px dashed #888;
+      border-radius: 12px;
+      padding: 20px;
+      width: 270px;
+      margin: auto;
+      z-index: 2;
+    }
+    img {
+      width: 100px;
+      height: 100px;
+    }
+    .status-bar {
+      margin: 10px 0;
+      background-color: #eee;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .status-fill {
+      height: 20px;
+      background-color: #76c7c0;
+      text-align: center;
+      color: white;
+      line-height: 20px;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 16px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      background-color: #7ec8e3;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #4ca8cd;
+    }
+    #plane {
+      position: absolute;
+      top: 60px;
+      left: -600px;
+      font-size: 1.2rem;
+      white-space: nowrap;
+      transition: transform 6s linear;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .flying {
+      transform: translateX(120vw);
+    }
+    #weather-effect {
+      font-size: 1.5rem;
+      min-height: 30px;
+      margin: 15px;
+      animation: fadeOut 15s linear forwards;
+    }
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🌤️ Weather Biplane Buddy</h1>
+
+  <div id="plane">--@--@==[🐶]==<==@--@--</div>
+
+  <div id="weather-effect"></div>
+
+  <div id="pet-container">
+    <p id="status-text">🐶 reporting for duty!</p>
+    <img src="https://via.placeholder.com/100" alt="Your Pet" />
+
+    <div>
+      <p>❤️ Health</p>
+      <div class="status-bar"><div id="health-bar" class="status-fill">100%</div></div>
+
+      <p>🍞 Hunger</p>
+      <div class="status-bar"><div id="hunger-bar" class="status-fill">Full</div></div>
+
+      <p>😊 Happiness</p>
+      <div class="status-bar"><div id="happy-bar" class="status-fill">Ecstatic</div></div>
+    </div>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <!-- Care Buttons -->
+    <button onclick="feed()">🍎 Feed</button>
+    <button onclick="play()">🎈 Play</button>
+    <button onclick="sleep()">💤 Sleep</button>
+    <button onclick="heal()">💊 Heal</button>
+    <button onclick="pet()">💖 Pet</button>
+    <button onclick="tick()">⏳ Advance Time</button>
+    <button onclick="fly()">🛫 Fly Biplane</button>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <!-- Weather Buttons -->
+    <button onclick="playWeather('sunny')">☀️ Sunny Skies</button>
+    <button onclick="playWeather('rain')">🌧️ Rainy</button>
+    <button onclick="playWeather('tornado')">🌪️ Tornado Alert!</button>
+  </div>
+
+  <!-- Local Audio -->
+  <audio id="sunny-audio" src="sunny.mp3"></audio>
+  <audio id="rain-audio" src="rain.mp3"></audio>
+  <audio id="tornado-audio" src="tornado.mp3"></audio>
+
+  <script>
+    let health = 100;
+    let hunger = 100;
+    let happiness = 100;
+
+    function updateBars() {
+      document.getElementById("health-bar").style.width = health + "%";
+      document.getElementById("health-bar").textContent = health + "%";
+      document.getElementById("hunger-bar").style.width = hunger + "%";
+      document.getElementById("hunger-bar").textContent =
+        hunger > 60 ? "Full" : hunger > 30 ? "Hungry" : "Starving";
+      document.getElementById("happy-bar").style.width = happiness + "%";
+      document.getElementById("happy-bar").textContent =
+        happiness > 60 ? "Ecstatic" : happiness > 30 ? "Meh" : "Sad";
+    }
+
+    function constrain() {
+      health = Math.max(0, Math.min(100, health));
+      hunger = Math.max(0, Math.min(100, hunger));
+      happiness = Math.max(0, Math.min(100, happiness));
+      updateBars();
+    }
+
+    function feed() {
+      hunger += 20;
+      happiness += 5;
+      setStatus("Yum! Snack fuel acquired.");
+      constrain();
+    }
+
+    function play() {
+      happiness += 15;
+      hunger -= 10;
+      setStatus("Aerial acrobatics complete!");
+      constrain();
+    }
+
+    function sleep() {
+      health += 10;
+      hunger -= 5;
+      happiness += 5;
+      setStatus("Zzz... Resting in cloud hammock...");
+      constrain();
+    }
+
+    function heal() {
+      health += 25;
+      setStatus("Vitals optimal. Wings ready.");
+      constrain();
+    }
+
+    function pet() {
+      happiness += 10;
+      setStatus("💖 Petting success! Tail wag initiated.");
+      constrain();
+    }
+
+    function tick() {
+      hunger -= 10;
+      happiness -= 5;
+      if (hunger < 30 || happiness < 30) health -= 10;
+      setStatus("Time passes in the atmosphere...");
+      constrain();
+    }
+
+    function fly() {
+      const plane = document.getElementById("plane");
+      plane.classList.remove("flying");
+      void plane.offsetWidth;
+      plane.classList.add("flying");
+      setStatus("🛩️ Liftoff! Slicing through skies!");
+    }
+
+    function setStatus(text) {
+      document.getElementById("status-text").textContent = text;
+    }
+
+    function playWeather(type) {
+      document.querySelectorAll("audio").forEach(audio => {
+        audio.pause();
+        audio.currentTime = 0;
+      });
+
+      const weather = document.getElementById("weather-effect");
+      const status = document.getElementById("status-text");
+
+      if (type === "sunny") {
+        weather.textContent = "☀️☀️ Sunshine beaming...";
+        document.getElementById("sunny-audio").play();
+        setStatus("🐶 sunbathing on the wing!");
+      } else if (type === "rain") {
+        weather.textContent = "💧💧 Rainfall incoming...";
+        document.getElementById("rain-audio").play();
+        setStatus("🐶 hiding under propeller ☔");
+      } else if (type === "tornado") {
+        weather.textContent = "🌪️🌪️ TORNADO ALERT! Brace!";
+        document.getElementById("tornado-audio").play();
+        setStatus("[🐶⬇️🏚️] tucked in the shelter!");
+      }
+
+      // Trigger fade animation
+      weather.style.animation = "none";
+      void weather.offsetWidth;
+      weather.style.animation = "fadeOut 15s linear forwards";
+    }
+
+    updateBars();
+  </script>
+</body>
+</html>
+this code is mine and is real so please dont skid this thats all bye bye i go to sleep

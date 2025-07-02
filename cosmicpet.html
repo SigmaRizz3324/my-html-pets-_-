@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>🚀 Brays Lil Cosmic Pet</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #eef2f3;
+      text-align: center;
+      padding: 30px;
+      overflow-x: hidden;
+    }
+    #pet {
+      background-color: #fff;
+      border: 2px dashed #888;
+      border-radius: 12px;
+      padding: 20px;
+      width: 250px;
+      margin: auto;
+      position: relative;
+      z-index: 2;
+    }
+    img {
+      width: 100px;
+      height: 100px;
+    }
+    .status-bar {
+      margin: 10px 0;
+      background-color: #eee;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .status-fill {
+      height: 20px;
+      background-color: #76c7c0;
+      text-align: center;
+      color: white;
+    }
+    button {
+      margin: 6px;
+      padding: 10px 16px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      background-color: #f4a261;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #e76f51;
+    }
+    #plane {
+      position: absolute;
+      top: 60px;
+      left: -150px;
+      font-size: 2rem;
+      transition: transform 5s linear;
+      z-index: 1;
+    }
+    .flying {
+      transform: translateX(120vw);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🌠 Brays Lil Cosmic Pet</h1>
+  <div id="plane">🛩️🐣</div>
+
+  <div id="pet">
+    <p id="status-text">I'm just born and curious!</p>
+    <img src="https://via.placeholder.com/100" alt="pixel pet" />
+
+    <div>
+      <p>❤️ Health</p>
+      <div class="status-bar"><div id="health-bar" class="status-fill">100%</div></div>
+
+      <p>🍞 Hunger</p>
+      <div class="status-bar"><div id="hunger-bar" class="status-fill">Full</div></div>
+
+      <p>😊 Happiness</p>
+      <div class="status-bar"><div id="happy-bar" class="status-fill">Ecstatic</div></div>
+    </div>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <button onclick="feed()">🍎 Feed</button>
+    <button onclick="play()">🎈 Play</button>
+    <button onclick="sleep()">💤 Sleep</button>
+    <button onclick="heal()">💊 Heal</button>
+    <button onclick="pet()">💖 Pet</button>
+    <button onclick="tick()">⏳ Advance Time</button>
+    <button onclick="fly()">🛫 Fly!</button>
+  </div>
+
+  <script>
+    let health = 100;
+    let hunger = 100;
+    let happiness = 100;
+
+    function updateBars() {
+      document.getElementById("health-bar").style.width = health + "%";
+      document.getElementById("health-bar").textContent = health + "%";
+
+      document.getElementById("hunger-bar").style.width = hunger + "%";
+      document.getElementById("hunger-bar").textContent =
+        hunger > 60 ? "Full" : hunger > 30 ? "Hungry" : "Starving";
+
+      document.getElementById("happy-bar").style.width = happiness + "%";
+      document.getElementById("happy-bar").textContent =
+        happiness > 60 ? "Ecstatic" : happiness > 30 ? "Meh" : "Sad";
+    }
+
+    function constrain() {
+      health = Math.max(0, Math.min(100, health));
+      hunger = Math.max(0, Math.min(100, hunger));
+      happiness = Math.max(0, Math.min(100, happiness));
+      updateBars();
+    }
+
+    function feed() {
+      hunger += 20;
+      happiness += 5;
+      document.getElementById("status-text").textContent =
+        "Yum! That was cosmic fruit!";
+      constrain();
+    }
+
+    function play() {
+      happiness += 15;
+      hunger -= 10;
+      document.getElementById("status-text").textContent =
+        "Yay! Interdimensional tag!";
+      constrain();
+    }
+
+    function sleep() {
+      health += 10;
+      hunger -= 5;
+      happiness += 5;
+      document.getElementById("status-text").textContent =
+        "Zzz... recharging stardust...";
+      constrain();
+    }
+
+    function heal() {
+      health += 25;
+      document.getElementById("status-text").textContent =
+        "All better! Celestial energy restored.";
+      constrain();
+    }
+
+    function pet() {
+      happiness += 10;
+      document.getElementById("status-text").textContent =
+        "Aww, you’re the best!";
+      constrain();
+    }
+
+    function tick() {
+      hunger -= 10;
+      happiness -= 5;
+      if (hunger < 30 || happiness < 30) {
+        health -= 10;
+      }
+      document.getElementById("status-text").textContent =
+        "Time passes in the void...";
+      constrain();
+    }
+
+    function fly() {
+      const plane = document.getElementById("plane");
+      plane.classList.remove("flying"); // Reset
+      void plane.offsetWidth; // Trigger reflow
+      plane.classList.add("flying");
+      document.getElementById("status-text").textContent =
+        "Wheee! Look at me soar across the cosmos!";
+    }
+
+    updateBars();
+  </script>
+</body>
+</html>
+btw yes this code is real 
